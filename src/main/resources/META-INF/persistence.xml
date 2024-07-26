@@ -4,7 +4,14 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
                                  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
-    <persistence-unit name="myPersistenceUnit" transaction-type="RESOURCE_LOCAL">
-        <class>web.model.User</class>
+    <persistence-unit name="myPersistenceUnit">
+        <class>web.model.User</class> <!-- Ensure this class path is correct -->
+        <properties>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/2.3.1.Schema"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="kjjLVUdf34F52346*(%"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+        </properties>
     </persistence-unit>
 </persistence>
