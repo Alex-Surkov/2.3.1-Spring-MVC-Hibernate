@@ -2,29 +2,16 @@ package web.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.JtaTransactionAnnotationParser;
-import org.springframework.transaction.jta.JtaTransactionManager;
-import web.controller.HelloController;
-import web.dao.UserDao;
-import web.dao.UserDaoImp;
-import web.model.User;
-import web.service.UserService;
-import web.service.UserServiceImpl;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -58,6 +45,7 @@ public class AppConfig {
         dataSource.setValidationQuery(env.getRequiredProperty("db.validationQuery"));
         return dataSource;
     }
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws IOException {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
@@ -67,14 +55,16 @@ public class AppConfig {
         emf.setJpaProperties(getJpaProperties());
         return emf;
     }
+
     private Properties getJpaProperties() throws IOException {
         Properties properties = new Properties();
         InputStream is = getClass().getClassLoader().getResourceAsStream("hibernate.properties");
         properties.load(is);
         return properties;
     }
+
     @Bean
-    public PlatformTransactionManager platformTransactionManager () throws IOException {
+    public PlatformTransactionManager platformTransactionManager() throws IOException {
         JpaTransactionManager manager = new JpaTransactionManager();
         manager.setEntityManagerFactory(entityManagerFactory().getObject());
         return manager;

@@ -5,7 +5,6 @@ import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.dao.UserDao;
-import web.dao.UserDaoImp;
 import web.model.User;
 
 import javax.transaction.Transactional;
@@ -18,16 +17,7 @@ public class UserServiceImpl implements UserService {
     UserDao dao;
 
     @Transactional
-    public void createUsersTable() throws HibernateException {
-        dao.createUsersTable();
-    }
-    @Transactional
-    public void dropUsersTable() throws HibernateException {
-        dao.dropUsersTable();
-    }
-
-    @Transactional
-    public void saveUser(String name, String lastName, byte age) throws HibernateException {
+    public void saveUser(String name, String lastName, int age) throws HibernateException {
         dao.saveUser(name, lastName, age);
     }
 
@@ -44,5 +34,29 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void cleanUsersTable() throws HibernateException {
         dao.cleanUsersTable();
+    }
+
+    @Transactional
+    @Override
+    public void updateName(long id, String newName) {
+        dao.updateName(id, newName);
+
+    }
+
+    @Transactional
+    @Override
+    public void updateLastname(long id, String newLastname) {
+        dao.updateLastname(id, newLastname);
+    }
+
+    @Transactional
+    @Override
+    public void updateAge(long id, int newAge) {
+        dao.updateAge(id, newAge);
+    }
+
+    @Override
+    public User getUser(long id) {
+        return dao.getUser(id);
     }
 }

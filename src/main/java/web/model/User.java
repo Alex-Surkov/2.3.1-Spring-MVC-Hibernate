@@ -1,16 +1,35 @@
 package web.model;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
 
 @Component
-@Table(name="users")
+@Table(name = "users")
 @Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column
+    private String name;
+    @Column
+    private String lastName;
+    @Column
+    private int age;
+
+    public User() {
+
+    }
+
+    public User(String name, String lastName, int age) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -21,34 +40,8 @@ public class User {
                 '}';
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
-    private String name;
-
-    @Column
-    private String lastName;
-
-    @Column
-    private Byte age;
-
-    public User() {
-
-    }
-    public User(String name, String lastName, Byte age) {
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-    }
-
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -67,11 +60,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Byte getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Byte age) {
+    public void setAge(int age) {
         this.age = age;
     }
 }
