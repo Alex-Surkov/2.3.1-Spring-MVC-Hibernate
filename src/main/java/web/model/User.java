@@ -1,8 +1,13 @@
 package web.model;
 
 
-import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
+
+
+@Component
 @Table(name="users")
 @Entity
 public class User {
@@ -32,7 +37,6 @@ public class User {
     public User() {
 
     }
-
     public User(String name, String lastName, Byte age) {
         this.name = name;
         this.lastName = lastName;

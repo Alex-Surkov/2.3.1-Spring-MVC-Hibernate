@@ -6,5 +6,8 @@
              version="2.2">
     <persistence-unit name="myPersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <class>web.model.User</class>
+        <class>web.service.UserService</class>
+        <class>web.dao.UserDao</class>
+
     </persistence-unit>
 </persistence>
