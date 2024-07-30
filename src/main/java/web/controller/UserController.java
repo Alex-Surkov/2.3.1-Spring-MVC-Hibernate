@@ -15,8 +15,14 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {
+
+
+    private final UserService userService;
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
 
     @GetMapping
     public String printUsers(ModelMap model) {
@@ -53,9 +59,7 @@ public class UserController {
                          @RequestParam("name") String newName,
                          @RequestParam("lastName") String newSurname,
                          @RequestParam("age") int newAge) {
-        userService.updateName(id, newName);
-        userService.updateLastname(id, newSurname);
-        userService.updateAge(id, newAge);
+        userService.updateUser(id, newName, newAge, newSurname );
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "users";
