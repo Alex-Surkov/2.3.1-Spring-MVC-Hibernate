@@ -6,7 +6,6 @@ import web.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
@@ -17,13 +16,11 @@ public class UserDaoImp implements UserDao {
 
 
     @Override
-    @Transactional
     public void saveUser(String name, String lastName, int age) {
         manager.persist(new User(name, lastName, age));
     }
 
     @Override
-    @Transactional
     public void removeUserById(long id) {
         TypedQuery<User> typedQuery = manager.createQuery("select u from User u where u.id = :id", User.class);
         typedQuery.setParameter("id", id);
@@ -31,7 +28,6 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @Transactional
     public List<User> getAllUsers() {
         return manager.createQuery("select u from User u", User.class).getResultList();
     }
@@ -45,34 +41,12 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @Transactional
-    public void cleanUsersTable() {
-    }
-
-    @Transactional
-    @Override
-    public void updateName(long id, String newName) {
+    public void updateUser(long id, String newName, int newAge, String newSurname) {
         TypedQuery<User> typedQuery = manager.createQuery("select u from User u where u.id = :id", User.class);
-        typedQuery.setParameter("id", id);
-        typedQuery.getSingleResult().setName(newName);
-
+        User user = typedQuery.setParameter("id", id).getSingleResult();
+        user.setName(newName);
+        user.setLastName(newSurname);
+        user.setAge(newAge);
     }
-
-    @Transactional
-    @Override
-    public void updateLastname(long id, String newLastname) {
-        TypedQuery<User> typedQuery = manager.createQuery("select u from User u where u.id = :id", User.class);
-        typedQuery.setParameter("id", id);
-        typedQuery.getSingleResult().setLastName(newLastname);
-    }
-
-    @Transactional
-    @Override
-    public void updateAge(long id, int newAge) {
-        TypedQuery<User> typedQuery = manager.createQuery("select u from User u where u.id = :id", User.class);
-        typedQuery.setParameter("id", id);
-        typedQuery.getSingleResult().setAge(newAge);
-    }
-
 
 }

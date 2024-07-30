@@ -15,13 +15,5 @@ public interface UserDao {
 
     User getUser(long id);
 
-    void cleanUsersTable();
-
-    void updateName(long id, String newName);
-
-    void updateLastname(long id, String newLastname);
-
-    void updateAge(long id, int newAge);
-
-
+    void updateUser(long id, String newName, int newAge, String newSurname);
 }

@@ -14,8 +14,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 
@@ -25,46 +23,36 @@ import java.util.Properties;
 @ComponentScan(basePackages = "web")
 public class AppConfig {
 
+    private final Environment environment;
     @Autowired
-    private Environment env;
+    AppConfig(Environment environment){
+        this.environment = environment;
+    }
 
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
-        dataSource.setUrl(env.getProperty("db.url"));
-        dataSource.setUsername(env.getProperty("db.username"));
-        dataSource.setPassword(env.getProperty("db.password"));
-
-        dataSource.setInitialSize(Integer.valueOf(env.getRequiredProperty("db.initialSize")));
-        dataSource.setMinIdle(Integer.valueOf(env.getRequiredProperty("db.minIdle")));
-        dataSource.setMaxIdle(Integer.valueOf(env.getRequiredProperty("db.maxIdle")));
-        dataSource.setTimeBetweenEvictionRunsMillis(Long.valueOf(env.getRequiredProperty("db.timeBetweenEvictionRunsMillis")));
-        dataSource.setMinEvictableIdleTimeMillis(Long.valueOf(env.getRequiredProperty("db.minEvictableIdleTimeMillis")));
-        dataSource.setTestOnBorrow(Boolean.valueOf(env.getRequiredProperty("db.testOnBorrow")));
-        dataSource.setValidationQuery(env.getRequiredProperty("db.validationQuery"));
+        dataSource.setDriverClassName(environment.getRequiredProperty("db.driver"));
+        dataSource.setUrl(environment.getProperty("db.url"));
+        dataSource.setUsername(environment.getProperty("db.username"));
+        dataSource.setPassword(environment.getProperty("db.password"));
         return dataSource;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws IOException {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
-        emf.setPackagesToScan(env.getRequiredProperty("db.packageToScan"));
+        emf.setPackagesToScan(environment.getRequiredProperty("db.packageToScan"));
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        emf.setJpaProperties(getJpaProperties());
+        Properties properties = new Properties();
+        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+        emf.setJpaProperties(properties);
         return emf;
     }
 
-    private Properties getJpaProperties() throws IOException {
-        Properties properties = new Properties();
-        InputStream is = getClass().getClassLoader().getResourceAsStream("hibernate.properties");
-        properties.load(is);
-        return properties;
-    }
-
     @Bean
-    public PlatformTransactionManager platformTransactionManager() throws IOException {
+    public PlatformTransactionManager platformTransactionManager() {
         JpaTransactionManager manager = new JpaTransactionManager();
         manager.setEntityManagerFactory(entityManagerFactory().getObject());
         return manager;

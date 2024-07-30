@@ -1,9 +1,6 @@
 package web.service;
 
-
 import web.model.User;
-
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserService {
@@ -14,17 +11,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void cleanUsersTable();
-
-    @Transactional
-    void updateName(long id, String newName);
-
-    @Transactional
-    void updateLastname(long id, String newLastname);
-
-    @Transactional
-    void updateAge(long id, int newAge);
-
-    @Transactional
     User getUser(long id);
+
+    void updateUser(long id, String newName, int newAge, String newSurname);
 }

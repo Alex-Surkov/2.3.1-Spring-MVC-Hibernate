@@ -13,8 +13,13 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+
+    private final UserDao dao;
+
     @Autowired
-    UserDao dao;
+    UserServiceImpl(UserDao dao) {
+        this.dao = dao;
+    }
 
     @Transactional
     public void saveUser(String name, String lastName, int age) throws HibernateException {
@@ -31,32 +36,16 @@ public class UserServiceImpl implements UserService {
         return dao.getAllUsers();
     }
 
-    @Transactional
-    public void cleanUsersTable() throws HibernateException {
-        dao.cleanUsersTable();
-    }
 
     @Transactional
-    @Override
-    public void updateName(long id, String newName) {
-        dao.updateName(id, newName);
-
-    }
-
-    @Transactional
-    @Override
-    public void updateLastname(long id, String newLastname) {
-        dao.updateLastname(id, newLastname);
-    }
-
-    @Transactional
-    @Override
-    public void updateAge(long id, int newAge) {
-        dao.updateAge(id, newAge);
-    }
-
     @Override
     public User getUser(long id) {
         return dao.getUser(id);
+    }
+
+    @Transactional
+    @Override
+    public void updateUser(long id, String newName, int newAge, String newSurname) {
+        dao.updateUser(id, newName, newAge, newSurname);
     }
 }
