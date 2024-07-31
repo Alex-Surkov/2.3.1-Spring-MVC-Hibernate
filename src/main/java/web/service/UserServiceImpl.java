@@ -14,7 +14,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
 
-    private final UserDao dao;
+    public final UserDao dao;
 
     @Autowired
     UserServiceImpl(UserDao dao) {
@@ -31,13 +31,11 @@ public class UserServiceImpl implements UserService {
         dao.removeUserById(id);
     }
 
-    @Transactional
+    @Override
     public List<User> getAllUsers() throws HibernateException {
         return dao.getAllUsers();
     }
 
-
-    @Transactional
     @Override
     public User getUser(long id) {
         return dao.getUser(id);
